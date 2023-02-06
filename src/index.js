@@ -26,14 +26,15 @@ app.get('/talker', async (_req, res) => {
 
 app.get('/talker/:id', async (req, res) => {
   const talkers = await readTalkerFile();
-  if (!req.params.id) {
+  const { id } = req.params;
+  const speaker = talkers.find((e) => e.id === Number(id));
+  
+  if (!speaker) {
       const message = {
           message: 'Pessoa palestrante não encontrada',
       };
-    return res.status(400).json(message);
+    return res.status(404).json(message);
   }
   
-  const { id } = req.params;
-  const speaker = talkers.find((e) => e.id === Number(id));
   return res.status(200).json(speaker);
 });
