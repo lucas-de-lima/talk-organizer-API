@@ -1,4 +1,5 @@
 const express = require('express');
+const { readTalkerFile } = require('./utils/readAndWriteFiles');
 
 const app = express();
 app.use(express.json());
@@ -13,4 +14,26 @@ app.get('/', (_request, response) => {
 
 app.listen(PORT, () => {
   console.log('Online');
+});
+
+app.get('/talker', async (_req, res) => {
+  const talkers = await readTalkerFile();
+  if (talkers) {
+    return res.status(200).json(talkers);
+  }
+  return res.status(200).json([]);
+});
+
+app.get('/talker/:id', async (req, res) => {
+  const talkers = await readTalkerFile();
+  if (!req.params.id) {
+      const message = {
+          message: 'Pessoa palestrante não encontrada',
+      };
+    return res.status(400).json(message);
+  }
+  
+  const { id } = req.params;
+  const speaker = talkers.find((e) => e.id === Number(id));
+  return res.status(200).json(speaker);
 });
