@@ -1,5 +1,6 @@
 const express = require('express');
 const { readTalkerFile } = require('./utils/readAndWriteFiles');
+const generateToken = require('./utils/genereteToken');
 
 const app = express();
 app.use(express.json());
@@ -37,4 +38,9 @@ app.get('/talker/:id', async (req, res) => {
   }
   
   return res.status(200).json(speaker);
+});
+
+app.post('/login', (req, res) => {
+  const token = generateToken();
+  res.status(200).json({ token });
 });

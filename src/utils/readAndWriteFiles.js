@@ -2,26 +2,26 @@ const fs = require('fs/promises');
 
 const readTalkerFile = async () => {
   try {
-    const arrayPosts = await fs.readFile('src/talker.json', 'utf8');
+    const arrayTalker = await fs.readFile('src/talker.json', 'utf8');
 
-    return JSON.parse(arrayPosts);
+    return JSON.parse(arrayTalker);
   } catch (error) {
     return null;
   }
 };
 
 const getTalkerLastId = async () => {
-  const arrayPosts = await readTalkerFile();
-  return arrayPosts[0];
+  const arrayTalker = await readTalkerFile();
+  return arrayTalker[0];
 };
 
 const insertTalkerFile = async (post) => {
   try {
-    const arrayPosts = await readTalkerFile();
-    arrayPosts.push(post);
-    arrayPosts[0] += 1;
+    const arrayTalker = await readTalkerFile();
+    arrayTalker.push(post);
+    arrayTalker[0] += 1;
 
-    return await fs.writeFile('src/talker.json', JSON.stringify(arrayPosts));
+    return await fs.writeFile('src/talker.json', JSON.stringify(arrayTalker));
   } catch (error) {
     return null;
   }
@@ -29,19 +29,19 @@ const insertTalkerFile = async (post) => {
 
 const changeTalkerFile = async (post, id) => {
   try {
-    const arrayPosts = await readTalkerFile();
+    const arrayTalker = await readTalkerFile();
     let changedPost;
 
-    for (let i = 0; i < arrayPosts.length; i += 1) {
-      if (arrayPosts[i].id === Number(id)) {
-        arrayPosts[i].title = post.title;
-        arrayPosts[i].description = post.description;
-        arrayPosts[i].updatedAt = post.updatedAt;
-        changedPost = arrayPosts[i];
+    for (let i = 0; i < arrayTalker.length; i += 1) {
+      if (arrayTalker[i].id === Number(id)) {
+        arrayTalker[i].title = post.title;
+        arrayTalker[i].description = post.description;
+        arrayTalker[i].updatedAt = post.updatedAt;
+        changedPost = arrayTalker[i];
       }
     }
     
-    await fs.writeFile('src/talker.json', JSON.stringify(arrayPosts));
+    await fs.writeFile('src/talker.json', JSON.stringify(arrayTalker));
     return changedPost;
   } catch (error) {
     return null;
