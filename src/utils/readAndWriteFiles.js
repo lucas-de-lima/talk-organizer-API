@@ -12,7 +12,7 @@ const readTalkerFile = async () => {
 
 const getTalkerLastId = async () => {
   const arrayTalker = await readTalkerFile();
-  return arrayTalker[0];
+  return arrayTalker[arrayTalker.length - 1].id;
 };
 
 const insertTalkerFile = async (post) => {
