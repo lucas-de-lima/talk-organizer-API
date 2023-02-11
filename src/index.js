@@ -1,6 +1,6 @@
 const express = require('express');
 const { readTalkerFile, getTalkerLastId,
-        insertTalkerFile, changeTalkerFile } = require('./utils/readAndWriteFiles');
+        insertTalkerFile, changeTalkerFile, deleteTalker } = require('./utils/readAndWriteFiles');
 const generateToken = require('./utils/genereteToken');
 const { validateLogin } = require('./middlewares/validateLogin');
 const { validateAge,
@@ -81,4 +81,10 @@ validateToken,
       const talker = req.body;
       const changeTalker = await changeTalkerFile({ id, talker });
       res.status(200).json(changeTalker);
+});
+
+app.delete('/talker/:id', validateToken, async (req, res) => {
+  const { id } = req.params;
+ await deleteTalker(id);
+ res.status(204).json({});
 });
