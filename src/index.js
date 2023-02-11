@@ -1,5 +1,6 @@
 const express = require('express');
-const { readTalkerFile, getTalkerLastId, insertTalkerFile } = require('./utils/readAndWriteFiles');
+const { readTalkerFile, getTalkerLastId,
+        insertTalkerFile, changeTalkerFile } = require('./utils/readAndWriteFiles');
 const generateToken = require('./utils/genereteToken');
 const { validateLogin } = require('./middlewares/validateLogin');
 const { validateAge,
@@ -60,9 +61,24 @@ app.post('/talker',
     validateRate,
     validateWatchedAt,
     async (req, res) => {
-      const speaker = req.body;
-      const lastIdSpeaker = await getTalkerLastId();
-      const saveSpeaker = { id: lastIdSpeaker + 1, ...speaker };
-      await insertTalkerFile(saveSpeaker);
-      res.status(201).json(saveSpeaker);
+      const talker = req.body;
+      const lastIdTalker = await getTalkerLastId();
+      const saveTalker = { id: lastIdTalker + 1, ...talker };
+      await insertTalkerFile(saveTalker);
+      res.status(201).json(saveTalker);
   });
+
+app.put('/talker/:id', 
+validateToken,
+    validateAge,
+    validateAgeInteger,
+    validateName, 
+    validateTalk,
+    validateRate,
+    validateWatchedAt,
+    async (req, res) => {
+      const { id } = req.params;
+      const talker = req.body;
+      const changeTalker = await changeTalkerFile({ id, talker });
+      res.status(200).json(changeTalker);
+});

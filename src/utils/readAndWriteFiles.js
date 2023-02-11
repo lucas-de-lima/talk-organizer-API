@@ -15,10 +15,10 @@ const getTalkerLastId = async () => {
   return arrayTalker[arrayTalker.length - 1].id;
 };
 
-const insertTalkerFile = async (post) => {
+const insertTalkerFile = async (talker) => {
   try {
     const arrayTalker = await readTalkerFile();
-    arrayTalker.push(post);
+    arrayTalker.push(talker);
     arrayTalker[0] += 1;
 
     return await fs.writeFile('src/talker.json', JSON.stringify(arrayTalker));
@@ -27,22 +27,22 @@ const insertTalkerFile = async (post) => {
   }
 };
 
-const changeTalkerFile = async (post, id) => {
+const changeTalkerFile = async ({ talker, id }) => {
   try {
     const arrayTalker = await readTalkerFile();
-    let changedPost;
+    let changedTalker;
 
     for (let i = 0; i < arrayTalker.length; i += 1) {
       if (arrayTalker[i].id === Number(id)) {
-        arrayTalker[i].title = post.title;
-        arrayTalker[i].description = post.description;
-        arrayTalker[i].updatedAt = post.updatedAt;
-        changedPost = arrayTalker[i];
+        arrayTalker[i].name = talker.name;
+        arrayTalker[i].age = talker.age;
+        arrayTalker[i].talk = talker.talk;
+        changedTalker = arrayTalker[i];
       }
     }
     
     await fs.writeFile('src/talker.json', JSON.stringify(arrayTalker));
-    return changedPost;
+    return changedTalker;
   } catch (error) {
     return null;
   }
