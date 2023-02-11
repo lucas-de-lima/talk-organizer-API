@@ -3,9 +3,8 @@ const { readTalkerFile, getTalkerLastId, insertTalkerFile } = require('./utils/r
 const generateToken = require('./utils/genereteToken');
 const { validateLogin } = require('./middlewares/validateLogin');
 const { validateAge,
-        validateName, validateTalk,
-        validateToken, 
-        validateForm,
+        validateName, validateTalk, validateAgeInteger,
+        validateToken, validateWatchedAt,
         validateRate, 
          } = require('./middlewares/valuesValidation');
 
@@ -53,23 +52,16 @@ app.post('/login', validateLogin, (req, res) => {
 });
 
 app.post('/talker',
+    validateToken,
     validateAge,
+    validateAgeInteger,
     validateName, 
     validateTalk,
-    validateToken,
     validateRate,
-    // validateForm,
+    validateWatchedAt,
     async (req, res) => {
-      const { username, password, email } = req.body;
-      const { formValid,
-              usernameError,
-              passwordError,
-              emailError } = validateForm(username, password, email);
-      if (!formValid) {
-        return res.status(400).json({ usernameError, passwordError, emailError });
-      }
       const speaker = req.body;
-      const lastIdSpeaker = getTalkerLastId();
+      const lastIdSpeaker = await getTalkerLastId();
       const saveSpeaker = { id: lastIdSpeaker + 1, ...speaker };
       await insertTalkerFile(saveSpeaker);
       res.status(201).json(saveSpeaker);
