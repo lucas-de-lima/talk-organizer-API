@@ -19,7 +19,6 @@ const insertTalkerFile = async (talker) => {
   try {
     const arrayTalker = await readTalkerFile();
     arrayTalker.push(talker);
-    arrayTalker[0] += 1;
 
     return await fs.writeFile('src/talker.json', JSON.stringify(arrayTalker));
   } catch (error) {
@@ -55,10 +54,18 @@ const deleteTalker = async (id) => {
   await fs.writeFile('src/talker.json', JSON.stringify(newArray));
 };
 
+const searchByName = async (search) => {
+  const arrayTalker = await readTalkerFile();
+  console.log(arrayTalker);
+  const filtredTalkers = arrayTalker.filter((talker) => talker.name.includes(search));
+  return filtredTalkers;
+};
+
 module.exports = {
   readTalkerFile,
   getTalkerLastId,
   insertTalkerFile,
   changeTalkerFile,
   deleteTalker,
+  searchByName,
 };

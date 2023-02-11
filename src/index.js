@@ -1,6 +1,7 @@
 const express = require('express');
 const { readTalkerFile, getTalkerLastId,
-        insertTalkerFile, changeTalkerFile, deleteTalker } = require('./utils/readAndWriteFiles');
+        insertTalkerFile, changeTalkerFile, deleteTalker,
+         searchByName } = require('./utils/readAndWriteFiles');
 const generateToken = require('./utils/genereteToken');
 const { validateLogin } = require('./middlewares/validateLogin');
 const { validateAge,
@@ -22,6 +23,12 @@ app.get('/', (_request, response) => {
 
 app.listen(PORT, () => {
   console.log('Online');
+});
+
+app.get('/talker/search', validateToken, async (req, res) => {
+  const { q } = req.query;
+  const talkers = await searchByName(q);
+  res.status(200).json(talkers);
 });
 
 app.get('/talker', async (_req, res) => {
