@@ -56,7 +56,6 @@ const deleteTalker = async (id) => {
 
 const searchByName = async (search) => {
   const arrayTalker = await readTalkerFile();
-  console.log(arrayTalker);
   const filtredTalkers = arrayTalker.filter((talker) => talker.name.includes(search));
   return filtredTalkers;
 };

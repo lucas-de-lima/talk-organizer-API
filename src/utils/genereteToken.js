@@ -12,7 +12,5 @@ function generateToken() {
     result = result.slice(0, 12) + randomNumbers.slice(0, 4);
     return result;
   }
-
-  console.log(generateToken());
   
 module.exports = generateToken;

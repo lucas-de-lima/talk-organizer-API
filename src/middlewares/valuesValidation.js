@@ -89,11 +89,6 @@ const validateToken = (req, res, next) => {
     next();
   };
 
-  // const { valid, message } = validateRate(talk.rate);
-  //   if (!valid) {
-  //     return res.status(400).json({ message });
-  //   }
-
   module.exports = {
     validateToken,
     validateName,
